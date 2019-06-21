@@ -3,7 +3,7 @@
  */
 
 mybutton.addEventListener('click', (e) => {
-  var request = new XMLHttpRequest()
+  let request = new XMLHttpRequest()
   request.open('get', 'http://jack.com:8002/xxx')
   request.send()
   request.onreadystatechange = () => {
