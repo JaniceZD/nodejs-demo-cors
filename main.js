@@ -14,6 +14,8 @@ mybutton.addEventListener('click', (e) => {
         // JSON.parse 是浏览器提供的
         let object = window.JSON.parse(string)
         console.log(object.note)
+      } else if (request.status >= 400) {
+        console.log('请求失败')
       }
     }
   }
