@@ -1,22 +1,41 @@
 /**
- * 使用原生JS发起AJAX请求
+ * 封装一个 jQuery.ajax
  */
 
-mybutton.addEventListener('click', (e) => {
+window.jQuery = function (nodeOrSelector) {
+  let nodes = {}
+  nodes.addClass = function () { }
+  nodes.setText = function () { }
+  return nodes
+}
+
+window.jQuery.ajax = function (url, method, body, success, fail) {
   let request = new XMLHttpRequest()
-  request.open('get', 'http://jack.com:8002/xxx')
-  request.send()
+  request.open(method, url)
   request.onreadystatechange = () => {
     if (request.readyState === 4) {
       if (request.status >= 200 && request.status < 300) {
-        // 把符合 JSON 语法的字符串转换成 JS 对应的值
-        let string = request.responseText
-        // JSON.parse 是浏览器提供的
-        let object = window.JSON.parse(string)
-        console.log(object.note)
+        success.call(undefined, request.responseText)
       } else if (request.status >= 400) {
-        console.log('请求失败')
+        fail.call(undefined, request)
       }
     }
   }
+  request.send(body)
+}
+
+mybutton.addEventListener('click', (e) => {
+  window.jQuery.ajax(
+    '/xxx',
+    'post',
+    'hello!',
+    (x) => {
+      console.log(x)
+      console.log('Success')
+    },
+    (x) => {
+      console.log(x.status)
+      console.log(x.responseText)
+    }
+  )
 })
