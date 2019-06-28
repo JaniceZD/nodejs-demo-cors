@@ -11,9 +11,13 @@ window.jQuery = function (nodeOrSelector) {
 
 window.$ = window.jQuery
 
-window.jQuery.ajax = function ({ url, method, body, successFn, failFn }) {
+window.jQuery.ajax = function ({ url, method, body, successFn, failFn, headers }) {
   let request = new XMLHttpRequest()
   request.open(method, url)
+  for (let key in headers) {
+    let value = headers[key]
+    request.setRequestHeader(key, value)
+  }
   request.onreadystatechange = () => {
     if (request.readyState === 4) {
       if (request.status >= 200 && request.status < 300) {
@@ -38,6 +42,10 @@ mybutton.addEventListener('click', (e) => {
     url: '/xxx',
     method: 'post',
     body: 'hello!',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Janice': '18'
+    },
     successFn: (x) => {
       f1.call(undefined, x)
       f2.call(undefined, x)
